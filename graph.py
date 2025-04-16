@@ -340,14 +340,17 @@ class ImageGraph:
         print("Starting BFS; initial state:")
         self.print_image()
         queue = Queue()
-        queue.enqueue(start_index)
+        start_vertex = self.vertices[start_index]
+        original_color = start_vertex.color
+        queue.enqueue(start_vertex)
         while not queue.is_empty():
             current = queue.dequeue()
-            ColoredVertex.current.visit_and_set_color(color)
-            for adj_vertex in self.adj_matrix:
-                if adj_vertex.visited == False:
+            current_vertex = self.vertices[current]
+            current_vertex.visit_and_set_color(color)
+            for adj_vertex in current_vertex.edges:
+                if adj_vertex.visited == False and adj_vertex.color == original_color:
                     queue.enqueue(adj_vertex)
-                    ColoredVertex.adj_vertex.visit_and_set_color(color)
+                    adj_vertex.visited = True
         
 
     # TODO: Modify this method. You may delete this comment when you are done.
@@ -378,12 +381,16 @@ class ImageGraph:
         self.reset_visited()
         print("Starting DFS; initial state:")
         stack = Stack()
-        stack.push(start_index)
+        start_vertex = self.vertices[start_index]
+        original_color = start_vertex.color
+        stack.push(start_vertex)
         while not stack.is_empty():
             current = stack.pop()
-            ColoredVertex.current.visit_and_set_color(color)
-            for adj_vertex in self.adj_matrix:
-                stack.push(adj_vertex)         
+            current_vertex = self.vertices[current]
+            if current_vertex.visited == False and current_vertex == original_color:
+                current_vertex.visit_and_set_color(color)
+                for adj_vertex in current_vertex.edges:
+                    stack.push(adj_vertex)         
         self.print_image()
 
 
@@ -398,12 +405,14 @@ def create_graph(data):
     post: a tuple containing the ImageGraph instance, the starting position,
           and the search color.
     """
-
     # split the data by new line
-    
+    lines = data.split()
     # get size of image and number of vertices
-
+    x = len(lines[0])
+    y = len(lines)
+    size = x * y
     # create the ImageGraph
+    image = ImageGraph(size)
 
     # create vertices - vertex info has the format "x,y,color"
 
@@ -413,8 +422,6 @@ def create_graph(data):
     # read search starting position and color
 
     # return the ImageGraph, starting position, and color as a tuple in this order.
-
-    raise NotImplementedError("Remove this exception and implement create_graph here.")
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
