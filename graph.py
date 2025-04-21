@@ -306,9 +306,16 @@ class ImageGraph:
 
         post: return a 2D list of integers representing the adjacency matrix.
         """
+        size = len(self.vertices)
         adj_matrix = []
+        for i in range(size):
+            row = []
+            for j in range(size):
+                row.append(0)
+            adj_matrix.append(row)
         for vertex in self.vertices:
-            adj_matrix.append(vertex)
+            for neighbor_index in vertex.edges:
+                adj_matrix[vertex.index][neighbor_index] = 1
         return adj_matrix
     
     # TODO: Modify this method. You may delete this comment when you are done.
@@ -406,15 +413,36 @@ def create_graph(data):
           and the search color.
     """
     # split the data by new line
-    lines = data.split()
+    lines = data.strip().split()
     # get size of image and number of vertices
-    x = len(lines[0])
-    y = len(lines)
-    size = x * y
+    size = int(lines[0])
+    num_vertices = int(lines[1])
     # create the ImageGraph
     image = ImageGraph(size)
 
     # create vertices - vertex info has the format "x,y,color"
+    for i in range(num_vertices):
+        x, y, color = lines[2 + i].split(",")
+        x = int(x.strip())
+        y = int(y.strip())
+        color = color.strip()
+        vertex = ColoredVertex(index = i, x = x, y = y, color = color)
+        image.vertices.append(vertex)
+    edge_start = 2 + num_vertices
+    num_edges = int(lines[edge_start])
+    for i in range(num_edges):
+        from_index, to_index = lines[edge_start + 1 + i].split(",")
+        from_index, to_index = int(from_index.strip()), int(to_index.strip())
+        image.vertices[from_index].add_edge(to_index)
+        image.vertices[to_index].add_edge(from_index)
+    fill = lines[edge_start + 1 + num_edges]
+    str_start, fill_color = fill.split(",")
+    start_index = int(str_start.strip())
+    fill_color = fill_color.strip()
+
+    return (image, start_index, fill_color)
+
+
 
     # create edges between vertices - edge info has the format "from_index,to_index"
     # connect vertex A to vertex B and the other way around
@@ -436,15 +464,26 @@ def main():
     # read all input as a single string.
     data = sys.stdin.read()
 
+
     # create graph, passing in data
+    image, start_index, fill_color = create_graph(data)
+
 
     # print adjacency matrix in a readable format (maybe row by row)
+    matrix = image.create_adjacency_matrix()
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            print(matrix[i][j])
+    
 
     # run bfs
+    image.bfs(start_index, fill_color)
 
     # reset by creating graph again
+    image, start_index, fill_color = create_graph(data)
 
     # run dfs
+    image.dfs(start_index, fill_color)
 
 
 if __name__ == "__main__":
