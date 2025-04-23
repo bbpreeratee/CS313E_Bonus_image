@@ -349,15 +349,17 @@ class ImageGraph:
         queue = Queue()
         start_vertex = self.vertices[start_index]
         original_color = start_vertex.color
+        start_vertex.visited = True
         queue.enqueue(start_vertex)
         while not queue.is_empty():
             current = queue.dequeue()
-            current_vertex = self.vertices[current]
-            current_vertex.visit_and_set_color(color)
-            for adj_vertex in current_vertex.edges:
-                if adj_vertex.visited == False and adj_vertex.color == original_color:
-                    queue.enqueue(adj_vertex)
-                    adj_vertex.visited = True
+            current.visit_and_set_color(color)
+
+            for neighbor_index in current.edges:
+                neighbor = self.vertices[neighbor_index]
+                if not neighbor.visited and neighbor.color == original_color:
+                    neighbor.visited = True  
+                    queue.enqueue(neighbor)
         
 
     # TODO: Modify this method. You may delete this comment when you are done.
@@ -392,13 +394,19 @@ class ImageGraph:
         original_color = start_vertex.color
         stack.push(start_vertex)
         while not stack.is_empty():
-            current = stack.pop()
-            current_vertex = self.vertices[current]
-            if current_vertex.visited == False and current_vertex == original_color:
+            current_vertex = stack.pop()
+
+            if not current_vertex.visited and current_vertex.color == original_color:
                 current_vertex.visit_and_set_color(color)
-                for adj_vertex in current_vertex.edges:
-                    stack.push(adj_vertex)         
+                current_vertex.visited = True
+
+                for neighbor_index in current_vertex.edges:
+                    neighbor = self.vertices[neighbor_index]
+                    if not neighbor.visited and neighbor.color == original_color:
+                        stack.push(neighbor)
+
         self.print_image()
+
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
