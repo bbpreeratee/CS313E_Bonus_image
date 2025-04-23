@@ -58,7 +58,7 @@ class Node:
         next: The reference to the next node in the linked list (None by default).
     """
 
-    def __init__(self, data, next=None):
+    def __init__(self, data):
         """
         Initializes a new node with the given data and a reference to the next node.
 
@@ -71,7 +71,9 @@ class Node:
 
 
 class StackError(Exception):
-    pass
+    """
+    A class that raises a StackError Exception
+    """
 
 
 class Stack:
@@ -82,7 +84,6 @@ class Stack:
         _top: The top node of the stack.
         _size: The number of elements in the stack.
     """
-    
     def __init__(self):
         """
         Initializes an empty stack with no elements.
@@ -153,7 +154,9 @@ class Stack:
 
 
 class QueueError(Exception):
-    pass
+    """
+    A class that raises a QueueError Exception
+    """
 
 
 class Queue:
@@ -299,7 +302,6 @@ class ImageGraph:
 
     # Create the adjacency matrix.
     # Return the matrix at the end
-    # TODO: Modify this method. You may delete this comment when you are done.
     def create_adjacency_matrix(self):
         """
         Creates and returns the adjacency matrix for the graph.
@@ -308,17 +310,16 @@ class ImageGraph:
         """
         size = len(self.vertices)
         adj_matrix = []
-        for i in range(size):
+        for _ in range(size):
             row = []
-            for j in range(size):
+            for _ in range(size):
                 row.append(0)
             adj_matrix.append(row)
         for vertex in self.vertices:
             for neighbor_index in vertex.edges:
                 adj_matrix[vertex.index][neighbor_index] = 1
         return adj_matrix
-    
-    # TODO: Modify this method. You may delete this comment when you are done.
+
     def bfs(self, start_index, color):
         """
         You must implement this algorithm using a Queue.
@@ -358,11 +359,10 @@ class ImageGraph:
             for neighbor_index in current.edges:
                 neighbor = self.vertices[neighbor_index]
                 if not neighbor.visited and neighbor.color == original_color:
-                    neighbor.visited = True  
+                    neighbor.visited = True
                     queue.enqueue(neighbor)
-        
 
-    # TODO: Modify this method. You may delete this comment when you are done.
+
     def dfs(self, start_index, color):
         """
         You must implement this algorithm using a Stack WITHOUT using recursion.
@@ -409,7 +409,6 @@ class ImageGraph:
 
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def create_graph(data):
     """
     Creates a Graph object from the given input data and parses the starting
@@ -460,7 +459,6 @@ def create_graph(data):
     # return the ImageGraph, starting position, and color as a tuple in this order.
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def main():
     """
     The main function that drives the program execution.
@@ -479,10 +477,9 @@ def main():
 
     # print adjacency matrix in a readable format (maybe row by row)
     matrix = image.create_adjacency_matrix()
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            print(matrix[i][j])
-    
+    for i, row in enumerate(matrix):
+        for column in range(len(i)):
+            print(matrix[row][column])
 
     # run bfs
     image.bfs(start_index, fill_color)
