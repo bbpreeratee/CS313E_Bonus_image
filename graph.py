@@ -432,10 +432,7 @@ def create_graph(data):
     # create vertices - vertex info has the format "x,y,color"
     for i in range(num_vertices):
         x, y, color = lines[2 + i].split(",")
-        x = int(x.strip())
-        y = int(y.strip())
-        color = color.strip()
-        vertex = ColoredVertex(index = i, x = x, y = y, color = color)
+        vertex = ColoredVertex(index = i, x = int(x.strip()), y = int(y.strip()), color = color.strip())
         image.vertices.append(vertex)
     edge_start = 2 + num_vertices
     num_edges = int(lines[edge_start])
@@ -444,8 +441,7 @@ def create_graph(data):
         from_index, to_index = int(from_index.strip()), int(to_index.strip())
         image.vertices[from_index].add_edge(to_index)
         image.vertices[to_index].add_edge(from_index)
-    fill = lines[edge_start + 1 + num_edges]
-    str_start, fill_color = fill.split(",")
+    str_start, fill_color = lines[edge_start + 1 + num_edges].split(",")
     start_index = int(str_start.strip())
     fill_color = fill_color.strip()
 
