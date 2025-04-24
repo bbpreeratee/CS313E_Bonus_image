@@ -257,6 +257,7 @@ class Queue:
         return self._size
 
 
+
 class ColoredVertex:
     """Class for a graph vertex."""
 
@@ -446,17 +447,15 @@ def create_graph(data):
                                y = int(y.strip()), color = color.strip())
         image.vertices.append(vertex)
     edge_start = 2 + num_vertices
-    num_edges = int(lines[num_vertices + 2])
+    num_edges = int(lines[edge_start])
     for i in range(num_edges):
         from_index, to_index = lines[edge_start + 1 + i].split(",")
         from_index, to_index = int(from_index.strip()), int(to_index.strip())
         image.vertices[from_index].add_edge(to_index)
         image.vertices[to_index].add_edge(from_index)
     str_start, fill_color = lines[edge_start + 1 + num_edges].split(",")
-    start_index = int(str_start.strip())
-    fill_color = fill_color.strip()
 
-    return (image, start_index, fill_color)
+    return (image, int(str_start.strip()), fill_color.strip())
 
 
 
