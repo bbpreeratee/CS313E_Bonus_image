@@ -56,8 +56,6 @@ class Node:
         data: The value or data stored in the node.
         next: The reference to the next node in the linked list (None by default).
     """
-    def __str__(self):
-        return self.__class__.__name__
 
     def __init__(self, data, link=None):
         """
