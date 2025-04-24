@@ -15,7 +15,6 @@ Students. Academic penalties up to and including an F in the course are likely.
 UT EID 1: snz298
 UT EID 2: pr25257
 """
-
 import sys
 
 # -----------------------PRINTING LOGIC, DON'T WORRY ABOUT THIS PART----------------------------
