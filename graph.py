@@ -60,7 +60,7 @@ class Node:
     def __str__(self):
         return self.__class__.__name__
 
-    def __init__(self, data):
+    def __init__(self, data, link=None):
         """
         Initializes a new node with the given data and a reference to the next node.
 
@@ -69,23 +69,39 @@ class Node:
             next: Optional; the next node in the linked list (None by default).
         """
         self.data = data
-        self.next = next
+        self.next = link
+
+    @property
+    def next(self):
+        """
+        Getter method for the next attribute.
+        """
+        return self.__next
+
+    @next.setter
+    def next(self, value):
+        """
+        Setter method for the next attribute.
+        """
+        if value is None or isinstance(value, Node):
+            self.__next = value
+        else:
+            raise ValueError("Next must be a Node instance or None.")
 
 
 class StackError(Exception):
-    """
-    A class that raises a StackError Exception
-    """
+    """An Exception raised when the Stack class performs an illegal operation"""
 
 
 class Stack:
     """
     A class that implements a stack using a singly linked list.
-    
+
     Instance Variables:
         _top: The top node of the stack.
         _size: The number of elements in the stack.
     """
+
     def __init__(self):
         """
         Initializes an empty stack with no elements.
@@ -96,10 +112,10 @@ class Stack:
     def peek(self):
         """
         Returns the value at the top of the stack without removing it.
-        
+
         Raises:
             StackError: If the stack is empty, raises "Peek from empty stack.".
-        
+
         Returns:
             The data stored in the top node of the stack.
         """
@@ -110,7 +126,7 @@ class Stack:
     def push(self, item):
         """
         Pushes a new item onto the top of the stack.
-        
+
         Args:
             item: The data to push onto the stack.
         """
@@ -122,10 +138,10 @@ class Stack:
     def pop(self):
         """
         Removes and returns the item at the top of the stack.
-        
+
         Raises:
             StackError: If the stack is empty, raises "Pop from empty stack.".
-        
+
         Returns:
             The data from the top node of the stack.
         """
@@ -139,7 +155,7 @@ class Stack:
     def is_empty(self):
         """
         Checks if the stack is empty.
-        
+
         Returns:
             True if the stack is empty, False otherwise.
         """
@@ -148,7 +164,7 @@ class Stack:
     def size(self):
         """
         Returns the number of items in the stack.
-        
+
         Returns:
             The size of the stack as an integer.
         """
@@ -156,9 +172,7 @@ class Stack:
 
 
 class QueueError(Exception):
-    """
-    A class that raises a QueueError Exception
-    """
+    """An Exception raised when the Queue class performs an illegal operation"""
 
 
 class Queue:
@@ -424,18 +438,18 @@ def create_graph(data):
     # split the data by new line
     lines = data.strip().split()
     # get size of image and number of vertices
-    size = int(lines[0])
     num_vertices = int(lines[1])
     # create the ImageGraph
-    image = ImageGraph(size)
+    image = ImageGraph(int(lines[0]))
 
     # create vertices - vertex info has the format "x,y,color"
     for i in range(num_vertices):
         x, y, color = lines[2 + i].split(",")
-        vertex = ColoredVertex(index = i, x = int(x.strip()), y = int(y.strip()), color = color.strip())
+        vertex = ColoredVertex(index = i, x = int(x.strip()), \
+                               y = int(y.strip()), color = color.strip())
         image.vertices.append(vertex)
     edge_start = 2 + num_vertices
-    num_edges = int(lines[edge_start])
+    num_edges = int(lines[num_vertices + 2])
     for i in range(num_edges):
         from_index, to_index = lines[edge_start + 1 + i].split(",")
         from_index, to_index = int(from_index.strip()), int(to_index.strip())
